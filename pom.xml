@@ -9,13 +9,13 @@
 	<properties>
 		<protege.version>5.0.0</protege.version>
 	</properties>
-	
+
 	<dependencies>
 
 		<dependency>
 			<groupId>net.sourceforge.owlapi</groupId>
 			<artifactId>owlapi-osgidistribution</artifactId>
-			<version>4.1.3</version>
+			<version>4.2.6</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -46,11 +46,18 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
-		
-		<dependency>
+
+		<!-- <dependency>
 			<groupId>org.semanticweb.elk.justifications</groupId>
 			<artifactId>elk-justifications</artifactId>
 			<version>0.1.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency> -->
+		
+		<dependency>
+			<groupId>org.liveontologies</groupId>
+			<artifactId>owlapi-proof</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -59,6 +66,15 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 
+		<resources>
+			<resource>
+				<directory>${basedir}</directory>
+				<includes>
+					<include>plugin.xml</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 
 			<plugin>
@@ -74,17 +90,18 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.0.1</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.protege.editor.core.plugin.DefaultPluginActivator</Bundle-Activator>
 						<Bundle-SymbolicName>not.org.saa.protege.justifications;singleton:=true</Bundle-SymbolicName>
 						<Bundle-Vendor>Saa</Bundle-Vendor>
-						<Embed-Dependency>*;scope=!provided;scope=compile|runtime;inline=false</Embed-Dependency>
+<!--						<Export-Package>not.org.saa.protege.justifications</Export-Package>
+ 						<Embed-Dependency>*;scope=!provided;scope=compile|runtime;inline=false</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>
 						<Embed-Directory>target/dependency</Embed-Directory>
-						<Import-Package>*</Import-Package>
+						<Import-Package>*</Import-Package> -->
 					</instructions>
 					<manifestLocation>META-INF</manifestLocation>
 				</configuration>
@@ -101,4 +118,30 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>eclipse</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-dependencies</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-dependencies</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<excludeScope>provided</excludeScope>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

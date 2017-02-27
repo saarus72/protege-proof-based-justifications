@@ -13,28 +13,34 @@ import not.org.saa.protege.explanation.joint.service.JustificationComputationLis
 /**
  * 
  * @author Alexander
- *
+ * Date: 10/02/2017
  */
+
 public class JustificationComputator extends JustificationComputation {
 
 	private boolean isInterrupted = false;
+	private OWLEditorKit kit;
 	private List<JustificationComputationListener> listeners;
-	private JustificationLogic logic;
+	private ProverServiceManager manager;
 
-	public JustificationComputator(OWLAxiom entailment, OWLEditorKit kit) {
+	public JustificationComputator(OWLAxiom entailment, OWLEditorKit kit, ProverServiceManager manager) {
 		super(entailment);
+		this.kit = kit;
 		listeners = new ArrayList<JustificationComputationListener>();
-		logic = new JustificationLogic(kit);
+		this.manager = manager;
 	}
 
 	@Override
 	public void startComputation() {
-
+		
 		// should use a monitor later
+		
+		JustificationLogic logic = new JustificationLogic(kit);
 
-		Set<? extends Set<OWLAxiom>> justifications = logic.getProofBasedJustifications(getEntailment());
+		Set<? extends Set<OWLAxiom>> justifications = logic.getProofBasedJustifications(getEntailment(),
+				manager.getSelectedService().getProver(kit));
 		for (Set<OWLAxiom> justification : justifications)
-			for (JustificationComputationListener listener : new ArrayList<>(listeners))
+			for (JustificationComputationListener listener : listeners)
 				listener.foundJustification(justification);
 	}
 
