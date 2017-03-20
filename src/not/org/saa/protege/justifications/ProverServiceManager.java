@@ -2,6 +2,8 @@ package not.org.saa.protege.justifications;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.protege.editor.core.Disposable;
 
@@ -22,13 +24,20 @@ import not.org.saa.protege.justifications.service.ProverService;
 public class ProverServiceManager implements Disposable {
 
 	private final Collection<ProverService> services;
+	private Map<ProverService, String> serviceIds;
 	private ProverService selectedService = null;
+	public static String lastChoosenServiceId = null;
 
 	public ProverServiceManager(String KEY, String ID) throws Exception {
 		this.services = new ArrayList<ProverService>();
+		this.serviceIds = new HashMap<ProverService, String>();
 		ProverPluginLoader loader = new ProverPluginLoader(KEY, ID);
 		for (ProverPlugin plugin : loader.getPlugins())
-			services.add(plugin.newInstance());
+		{
+			ProverService service = plugin.newInstance();
+			services.add(service);
+			serviceIds.put(service, plugin.getIExtension().getUniqueIdentifier());
+		}
 	}
 
 	@Override
@@ -48,5 +57,11 @@ public class ProverServiceManager implements Disposable {
 	
 	public void selectService(ProverService service) {
 		selectedService = service;
+		lastChoosenServiceId = getIdForService(service);
+	}
+	
+	public String getIdForService(ProverService service)
+	{
+		return serviceIds.get(service);
 	}
 }

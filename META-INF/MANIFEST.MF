@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1488205529413
-Build-Jdk: 1.8.0_121
-Built-By: Alexander
+Bnd-LastModified: 1489707998209
+Build-Jdk: 1.8.0_102
+Built-By: Saa
 Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator
 Bundle-ManifestVersion: 2
 Bundle-Name: protege-proof-based-justifications

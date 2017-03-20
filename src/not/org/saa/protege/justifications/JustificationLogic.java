@@ -32,23 +32,6 @@ public class JustificationLogic {
 	public JustificationLogic(OWLEditorKit ek) {
 		this.editorKit = ek;
 	}
-	
-//	private OWLProver getOWLProver()
-//	{
-//		OWLReasoner reasoner = editorKit.getModelManager().getReasoner();
-//		try
-//		{
-//			OWLProver prover = (OWLProver)reasoner;
-//		}
-//		catch (Exception ex)
-//		{
-//			
-//		}
-//		if (reasoner instanceof OWLProver)
-//			return (OWLProver)reasoner;
-//		else
-//			return null;
-//	}
 
 	public Set<? extends Set<OWLAxiom>> getProofBasedJustifications(OWLAxiom entailment, OWLProver prover) {
 		if (prover == null)

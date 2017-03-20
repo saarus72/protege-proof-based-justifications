@@ -47,7 +47,7 @@ public class ProofBasedJustificationService extends ComputationService {
 
 	@Override
 	public String getName() {
-		return "Proof Based Justification Service";
+		return "Proof Based Justification";
 	}
 	
 	@Override
@@ -70,11 +70,16 @@ public class ProofBasedJustificationService extends ComputationService {
 				break;
 			default:
 				setLayout(new BorderLayout());
+				ProverService serviceToSelect = services.iterator().next();
 				JComboBox<ProverService> selector = new JComboBox<ProverService>();
 				for (ProverService service : services)
+				{
 					selector.addItem(service);
-				selector.setSelectedItem(services.iterator().next());
-				manager.selectService(services.iterator().next());
+					if (ProverServiceManager.lastChoosenServiceId == manager.getIdForService(service))
+						serviceToSelect = service;
+				}
+				selector.setSelectedItem(serviceToSelect);
+				manager.selectService(serviceToSelect);
 				selector.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
