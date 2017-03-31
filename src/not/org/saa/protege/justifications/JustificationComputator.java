@@ -1,9 +1,5 @@
 package not.org.saa.protege.justifications;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.protege.editor.owl.OWLEditorKit;
 import org.semanticweb.owlapi.model.OWLAxiom;
 
@@ -20,47 +16,38 @@ public class JustificationComputator extends JustificationComputation {
 
 	private boolean isInterrupted = false;
 	private OWLEditorKit kit;
-	private List<JustificationComputationListener> listeners;
 	private ProverServiceManager manager;
+	private JustificationLogic logic;
 
 	public JustificationComputator(OWLAxiom entailment, OWLEditorKit kit, ProverServiceManager manager) {
 		super(entailment);
 		this.kit = kit;
-		listeners = new ArrayList<JustificationComputationListener>();
 		this.manager = manager;
+		this.logic = new JustificationLogic(kit);
 	}
 
 	@Override
 	public void startComputation() {
-		
-		// should use a monitor later
-		
-		JustificationLogic logic = new JustificationLogic(kit);
-
-		Set<? extends Set<OWLAxiom>> justifications = logic.getProofBasedJustifications(getEntailment(),
-				manager.getSelectedService().getProver(kit));
-		for (Set<OWLAxiom> justification : justifications)
-			for (JustificationComputationListener listener : listeners)
-				listener.foundJustification(justification);
+		logic.computeProofBasedJustifications(getEntailment(), manager.getSelectedService().getProver(kit));
 	}
 
 	@Override
 	public void interruptComputation() {
-		isInterrupted = true;
+		logic.interruptComputation();
 	}
 
 	@Override
 	public boolean isComputationInterrupted() {
-		return isInterrupted;
+		return logic.isComputationInterrupted();
 	}
 
 	@Override
 	public void addComputationListener(JustificationComputationListener listener) {
-		listeners.add(listener);
+		logic.addComputationListener(listener);
 	}
 
 	@Override
 	public void removeComputationListener(JustificationComputationListener listener) {
-		listeners.remove(listener);
+		logic.removeComputationListener(listener);
 	}
 }

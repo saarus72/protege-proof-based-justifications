@@ -1,23 +1,23 @@
 package not.org.saa.protege.justifications;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.liveontologies.owlapi.proof.OWLProver;
-import org.liveontologies.puli.DynamicInferenceSet;
-import org.liveontologies.puli.GenericInferenceSet;
+import org.liveontologies.puli.InferenceJustifier;
 import org.liveontologies.puli.InferenceSet;
-import org.liveontologies.puli.JustifiedInference;
 import org.protege.editor.owl.OWLEditorKit;
-import org.semanticweb.elk.justifications.BottomUpJustificationComputation;
-import org.semanticweb.elk.justifications.DummyMonitor;
-import org.semanticweb.elk.justifications.JustificationComputation;
-import org.semanticweb.elk.proofs.adapters.InferenceSets;
+import org.liveontologies.puli.justifications.InterruptMonitor;
+import org.liveontologies.puli.justifications.JustificationComputation;
+import org.liveontologies.puli.justifications.ResolutionJustificationComputation;
+import org.liveontologies.puli.InferenceSets;
 import org.semanticweb.owlapi.model.OWLAxiom;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.parameters.Imports;
 import org.semanticweb.owlapi.reasoner.InferenceType;
-import org.semanticweb.owlapi.reasoner.OWLReasoner;
+
+import not.org.saa.protege.explanation.joint.service.JustificationComputationListener;
 
 /**
  * 
@@ -28,30 +28,66 @@ import org.semanticweb.owlapi.reasoner.OWLReasoner;
 public class JustificationLogic {
 
 	private OWLEditorKit editorKit;
-
+	private List<JustificationComputationListener> listeners;
+	private boolean isInterrupted = false;
+	
 	public JustificationLogic(OWLEditorKit ek) {
 		this.editorKit = ek;
+		listeners = new ArrayList<JustificationComputationListener>();
 	}
 
-	public Set<? extends Set<OWLAxiom>> getProofBasedJustifications(OWLAxiom entailment, OWLProver prover) {
+	public void computeProofBasedJustifications(OWLAxiom entailment, OWLProver prover) {
 		if (prover == null)
-			return null;
+			return;
+
 		prover.precomputeInferences(InferenceType.CLASS_HIERARCHY);
-
-		JustificationComputation.Factory<OWLAxiom, OWLAxiom> computationFactory = BottomUpJustificationComputation
-				.<OWLAxiom, OWLAxiom>getFactory();
-
 		InferenceSet<OWLAxiom> proof = prover.getProof(entailment);
 		Set<OWLAxiom> axioms = prover.getRootOntology().getAxioms(Imports.EXCLUDED);
-		final GenericInferenceSet<OWLAxiom, ? extends JustifiedInference<OWLAxiom, OWLAxiom>> inferenceSet = InferenceSets
-				.justifyAsserted(proof, axioms);
+		InferenceSet<OWLAxiom> inferenceSet = InferenceSets.addAssertedInferences(proof, axioms);
 
+		InferenceJustifier<OWLAxiom, ? extends Set<? extends OWLAxiom>> justifier = InferenceSets
+				.justifyAssertedInferences();
+
+		ResolutionJustificationComputation.Factory<OWLAxiom, OWLAxiom> computationFactory = ResolutionJustificationComputation
+				.getFactory();
+		SimpleMonitor monitor = new SimpleMonitor();
 		final JustificationComputation<OWLAxiom, OWLAxiom> computation = computationFactory.create(inferenceSet,
-				DummyMonitor.INSTANCE);
+				justifier, monitor);
 
-		final Set<Set<OWLAxiom>> justifications = new HashSet<Set<OWLAxiom>>(
-				computation.computeJustifications(entailment));
+		SimpleListener listener = new SimpleListener();
+		computation.enumerateJustifications(entailment, listener);
+	}
+	
+	public void addComputationListener(JustificationComputationListener listener) {
+		listeners.add(listener);
+	}
 
-		return justifications;
+	public void removeComputationListener(JustificationComputationListener listener) {
+		listeners.remove(listener);
+	}
+	
+	public void interruptComputation() {
+		isInterrupted = true;
+	}
+
+	public boolean isComputationInterrupted() {
+		return isInterrupted;
+	}
+
+	private class SimpleListener implements JustificationComputation.Listener<OWLAxiom> {
+
+		@Override
+		public void newJustification(Set<OWLAxiom> justification) {
+			for (JustificationComputationListener listener : listeners)
+				listener.foundJustification(justification);
+		}
+	}
+	
+	private class SimpleMonitor implements InterruptMonitor {
+		
+		@Override
+		public boolean isInterrupted() {
+			return isComputationInterrupted();
+		}
 	}
 }

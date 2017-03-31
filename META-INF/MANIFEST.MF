@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1489707998209
-Build-Jdk: 1.8.0_102
-Built-By: Saa
+Bnd-LastModified: 1490872368622
+Build-Jdk: 1.8.0_121
+Built-By: Alexander
 Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator
 Bundle-ManifestVersion: 2
 Bundle-Name: protege-proof-based-justifications
@@ -20,11 +20,10 @@ Import-Package: javax.swing,not.org.saa.protege.explanation.joint.servic
  e;version="[0.0,1)",not.org.saa.protege.justifications.service,org.ecli
  pse.core.runtime;version="[3.4,4)";registry=split,org.liveontologies.ow
  lapi.proof;version="[0.1,1)",org.liveontologies.puli;version="[0.1,1)",
- org.protege.editor.core;version="[5.0,6)",org.protege.editor.core.plugi
- n;version="[5.0,6)",org.protege.editor.owl;version="[5.0,6)",org.semant
- icweb.elk.justifications;version="[0.1,1)",org.semanticweb.elk.proofs.a
- dapters;version="[0.1,1)",org.semanticweb.owlapi.model;version="[4.2,5)
- ",org.semanticweb.owlapi.model.parameters;version="[4.2,5)",org.semanti
- cweb.owlapi.reasoner;version="[4.2,5)"
+ org.liveontologies.puli.justifications;version="[0.1,1)",org.protege.ed
+ itor.core;version="[5.0,6)",org.protege.editor.core.plugin;version="[5.
+ 0,6)",org.protege.editor.owl;version="[5.0,6)",org.semanticweb.owlapi.m
+ odel;version="[4.2,5)",org.semanticweb.owlapi.model.parameters;version=
+ "[4.2,5)",org.semanticweb.owlapi.reasoner;version="[4.2,5)"
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Tool: Bnd-3.0.0.201509101326
