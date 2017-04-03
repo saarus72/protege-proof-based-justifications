@@ -1,29 +1,41 @@
 Manifest-Version: 1.0
-Bnd-LastModified: 1490872368622
+Bnd-LastModified: 1491225277777
 Build-Jdk: 1.8.0_121
 Built-By: Alexander
-Bundle-Activator: org.protege.editor.core.plugin.DefaultPluginActivator
+Bundle-Description: This is a plug-in that provides the Protege Justific
+ ation Explanation plug-in withproof-based justifications by registering
+  as an extension to its justification service.It defines an extension p
+ oint to obtain a prover also since it does not compute proofsby its own
+  but uses the chosen prover instead. The main functionality of this plu
+ g-in is computing justifications based on proof and providing the Prote
+ ge JustificationExplanation plug-in with them.
+Bundle-DocURL: http://liveontologies.org
 Bundle-ManifestVersion: 2
-Bundle-Name: protege-proof-based-justifications
-Bundle-SymbolicName: not.org.saa.protege.justifications;singleton:=true
-Bundle-Vendor: Saa
+Bundle-Name: Protege Proof Justification Explanation
+Bundle-SymbolicName: org.liveontologies.protege.explanation.justificatio
+ n.proof;singleton:=true
+Bundle-Vendor: Live Ontologies Project
 Bundle-Version: 0.0.1.SNAPSHOT
 Created-By: Apache Maven Bundle Plugin
-Export-Package: not.org.saa.protege.justifications;uses:="javax.swing,no
- t.org.saa.protege.explanation.joint.service,not.org.saa.protege.justifi
- cations.service,org.liveontologies.owlapi.proof,org.protege.editor.core
- ,org.protege.editor.owl,org.semanticweb.owlapi.model";version="0.0.1",n
- ot.org.saa.protege.justifications.service;uses:="org.eclipse.core.runti
- me,org.liveontologies.owlapi.proof,org.protege.editor.core.plugin,org.p
- rotege.editor.owl";version="0.0.1"
-Import-Package: javax.swing,not.org.saa.protege.explanation.joint.servic
- e;version="[0.0,1)",not.org.saa.protege.justifications.service,org.ecli
- pse.core.runtime;version="[3.4,4)";registry=split,org.liveontologies.ow
- lapi.proof;version="[0.1,1)",org.liveontologies.puli;version="[0.1,1)",
- org.liveontologies.puli.justifications;version="[0.1,1)",org.protege.ed
- itor.core;version="[5.0,6)",org.protege.editor.core.plugin;version="[5.
- 0,6)",org.protege.editor.owl;version="[5.0,6)",org.semanticweb.owlapi.m
- odel;version="[4.2,5)",org.semanticweb.owlapi.model.parameters;version=
- "[4.2,5)",org.semanticweb.owlapi.reasoner;version="[4.2,5)"
+Export-Package: org.liveontologies.protege.explanation.justification.pro
+ of;uses:="javax.swing,org.liveontologies.owlapi.proof,org.liveontologie
+ s.protege.explanation.justification.proof.service,org.liveontologies.pr
+ otege.explanation.justification.service,org.protege.editor.core,org.pro
+ tege.editor.owl,org.semanticweb.owlapi.model";version="0.0.1",org.liveo
+ ntologies.protege.explanation.justification.proof.service;uses:="org.ec
+ lipse.core.runtime,org.liveontologies.owlapi.proof,org.protege.editor.c
+ ore.plugin,org.protege.editor.owl";version="0.0.1"
+Import-Package: javax.swing,org.eclipse.core.runtime;version="[3.4,4)";r
+ egistry=split,org.liveontologies.owlapi.proof;version="[0.1,1)",org.liv
+ eontologies.protege.explanation.justification.proof.service,org.liveont
+ ologies.protege.explanation.justification.service;version="[0.0,1)",org
+ .liveontologies.puli;version="[0.1,1)",org.liveontologies.puli.justific
+ ations;version="[0.1,1)",org.protege.editor.core;version="[5.0,6)",org.
+ protege.editor.core.plugin;version="[5.0,6)",org.protege.editor.owl;ver
+ sion="[5.0,6)",org.semanticweb.owlapi.model;version="[4.2,5)",org.seman
+ ticweb.owlapi.model.parameters;version="[4.2,5)",org.semanticweb.owlapi
+ .reasoner;version="[4.2,5)"
 Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
 Tool: Bnd-3.0.0.201509101326
+Update-Url: https://raw.githubusercontent.com/liveontologies/protege-pro
+ of-justification-explanation/release/p5.update.properties

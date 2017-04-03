@@ -4,12 +4,12 @@
    <extension-point id="ProverService" name="Prover Service" schema="schema/ProverService.exsd"/>
    <extension
          id="JustificationService"
-         point="not.org.saa.protege.explanation.joint.JustificationService">
+         point="org.liveontologies.protege.explanation.justification.JustificationService">
       <name
             value="Justification Service">
       </name>
       <class
-            value="not.org.saa.protege.justifications.ProofBasedJustificationService">
+            value="org.liveontologies.protege.explanation.justification.proof.ProofBasedJustificationService">
       </class>
    </extension>
 
